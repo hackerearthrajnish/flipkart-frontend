@@ -20,6 +20,7 @@ export const AuthenticationLogin = async (data) => {
         return result
     }
     catch (err) {
+        alert(err.response.data.message)
         console.warn(err)
     }
 }
@@ -30,6 +31,7 @@ export const payUsingPaytm = async (data) => {
         const response = await axios.post(`${URL}/create-checkout-session"`, data)
         return response.data
     } catch (err) {
+
         console.log('error while making payment', err)
     }
 }
@@ -54,21 +56,31 @@ export const AddToCart = async (product, setisUpdate) => {
                     ...products
                 }),
                 headers: {
+        
                     "content-type": "application/json"
                 }
             })
+
             result = await result.json()
-            setisUpdate(pre => pre + 1)
-            if (!result.isExist) {
-                auth.cart = result.cart.cart
-                auth.amount = result.cart.amount
-                auth.cartProducts = result.cartItems
-                localStorage.setItem("user", JSON.stringify(auth));
+            if (result?.message) {
+                alert(result.message)
+                return false
             }
-            return true;
+            else {
+
+                setisUpdate(pre => pre + 1)
+                if (!result.isExist) {
+                    auth.cart = result.cart.cart
+                    auth.amount = result.cart.amount
+                    auth.cartProducts = result.cartItems
+                    localStorage.setItem("user", JSON.stringify(auth));
+                }
+                return true;
+            }
         }
         catch (err) {
-            console.log(err)
+            // alert(err.response.data.message)
+            console.warn(err)
             return false
         }
 
@@ -96,21 +108,23 @@ export const DeleteFromCart = async (product, setisUpdate) => {
                     ...products
                 }),
                 headers: {
+                  
                     "content-type": "application/json"
                 }
             })
             result = await result.json()
-            console.log("🚀 ~ file: api.js:103 ~ DeleteFromCart ~ result:", result)
-
-            auth.cart = result.cart.cart
-            auth.amount = result.cart.amount
-            auth.cartProducts = result.cartItems
-            localStorage.setItem("user", JSON.stringify(auth));
-
-            setisUpdate(pre => pre - 1)
-
-
-            return true;
+            if (result?.message) {
+                alert(result.message)
+                return false
+            }
+            else {
+                auth.cart = result.cart.cart
+                auth.amount = result.cart.amount
+                auth.cartProducts = result.cartItems
+                localStorage.setItem("user", JSON.stringify(auth));
+                setisUpdate(pre => pre - 1)
+                return true;
+            }
         }
         catch (err) {
             console.log(err)
@@ -140,6 +154,7 @@ export const CheckOut = async (setisUpdate) => {
                     userId: auth?._id
                 }),
                 headers: {
+                   
                     "content-type": "application/json"
                 }
             })
@@ -177,10 +192,11 @@ export const IncreaseAPI = async (product) => {
                 ...product
             }),
             headers: {
+               
                 "content-type": "application/json"
             }
         })
-        
+
         let cartItems = auth.cartProducts
         cartItems.forEach(element => {
             if (element.id === product.id)
@@ -210,6 +226,7 @@ export const DecreaseAPI = async (product) => {
                 ...product
             }),
             headers: {
+              
                 "content-type": "application/json"
             }
         })

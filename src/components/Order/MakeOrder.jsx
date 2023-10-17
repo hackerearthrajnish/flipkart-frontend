@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, Grid, Snackbar, Typography, styled } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Divider, Grid, Snackbar, Typography, styled } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import TotalBalance from '../cart/TotalBalance'
 import { CalculateDiscount, TotalAmount } from '../utils/CartCalculation'
@@ -9,7 +9,7 @@ import DropIn from "braintree-web-drop-in-react";
 import axios from 'axios'
 import MY_URL from '../../Constants/url'
 import { useNavigate } from 'react-router-dom'
-import { ToastContainer} from 'react-toast'
+import { ToastContainer } from 'react-toast'
 import CartItem from '../cart/CartItem'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -98,6 +98,7 @@ const MakeOrder = () => {
             const { data } = await axios.get(`${MY_URL}/braintree/token`)
             setClientToken(data)
         } catch (err) {
+            alert(err)
             console.log(err)
         }
     }
@@ -124,27 +125,30 @@ const MakeOrder = () => {
     }, [isUpdate])
 
     const handlePayment = async () => {
-
+   
 
         const amount = auth.amount
-        const userId = auth._Id;
         const cartProducts = auth.cartProducts
         const address = auth.address
+        const email = auth.email
+        const name = auth.name
 
         try {
             setLoading(true)
-            const { nonce } = await instance.requestPaymentMethod()
+            // const { nonce } = await instance.requestPaymentMethod()
             await fetch(`${MY_URL}/product/braintree/payment`, {
 
                 method: 'POST',
                 body: JSON.stringify({
-                    nonce, amount, userId, cartProducts, address
+                    amount, cartProducts, address , email ,name
                 }),
                 headers: {
+
                     "content-type": "application/json"
                 }
 
             })
+            console.log('yes')
             setLoading(false)
             try {
                 await CheckOut(setisUpdate)
@@ -154,6 +158,8 @@ const MakeOrder = () => {
             }
             navigate('/')
             setpaymentSnakbar(true)
+            console.log('yes')
+
         } catch (err) {
             setLoading(false)
             console.log(err)
@@ -188,7 +194,7 @@ const MakeOrder = () => {
     return (
         <>
             {
-                (auth && auth.cartProducts.length) ?
+                (auth && auth?.cartProducts.length) ?
                     <Container container justifyContent="space-around">
                         <Snackbar
                             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -253,7 +259,11 @@ const MakeOrder = () => {
                             </Accordion>
 
                             <Divider sx={{ background: '#878787' }} />
-
+                            <Box className='m-3'>
+                                <input type='checkbox'/> <b>Cash on Delivery</b>
+                                <button className='btn btn-outline-success mx-2' onClick={handlePayment}>Order</button>
+                            </Box>
+                            <Divider sx={{ background: '#878787' }} />
 
                             {
                                 clientToken ?

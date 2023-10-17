@@ -64,13 +64,14 @@ const ActionItem = ({ product }) => {
 
         if (auth) {
             try {
-                await AddToCart(product, setisUpdate)
+                const result = await AddToCart(product, setisUpdate)
+                if (result)
+                    navigate('/cart')
             } catch (err) {
                 console.log(err)
             }
         }
 
-        navigate('/cart')
 
     }
 

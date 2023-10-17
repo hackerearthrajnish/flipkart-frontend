@@ -27,7 +27,7 @@ const ProductBox = styled(Box)({
 })
 
 const ProductImg = styled('img')({
-    width: '250px',
+    width: '200px',
     height: '250px',
     transition: 'transform .2s',
     marginBottom: '5px'
@@ -65,10 +65,16 @@ const LoadingBox = styled(Box)`
     justify-content : center;
     align-items :center   
 `
-const StyledTypo = styled(Box)`
-    display : flex ;
-    align-items: center 
-`;
+const StyledTypo = styled(Box)(({ theme }) => ({
+
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+        alignItems: 'start'
+    }
+}))
+
 const Rating = styled(Typography)({
     background: '#388e3c',
     color: '#fff',
@@ -83,7 +89,8 @@ const Rating = styled(Typography)({
 const RatingNumber = styled(Typography)({
     color: '#878787',
     marginLeft: '5px',
-    fontSize: '13px'
+    fontSize: '13px',
+    marginRight: '3px'
 });
 
 const Image = styled('img')({
@@ -92,11 +99,16 @@ const Image = styled('img')({
     margin: '0.5em 0'
 
 })
-const PriceDetails = styled(Box)({
+const PriceDetails = styled(Box)(({theme})=>({
 
     display: 'flex',
-    alignItems: 'center'
-})
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]:{
+        flexDirection:'column',
+        alignItems : 'start'
+    }
+    
+}))
 
 const Cost = styled(Box)`
     font-weight: 600;
@@ -113,8 +125,8 @@ const MRP = styled(Box)`
 
 const Discount = styled(Box)`
     color:#388e3c;
-    font-size: 16px;
-    margin: 0 0.5em
+    font-size: 14px;
+   
 `;
 
 const Title = styled(Typography)({
@@ -153,7 +165,7 @@ const AllProducts = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, [pathname]);
+    }, [pathname]);
 
     return (
         <>
@@ -185,16 +197,23 @@ const AllProducts = () => {
 
                                                     <Title>{AddElipsis(data.title.longTitle)}</Title>
                                                     <StyledTypo>
-                                                        <Rating>{data?.ratings.rating} <GradeIcon fontSize='13px' sx={{ margin: '3px' }} /></Rating>
-                                                        <RatingNumber>{data?.ratings.totalNumbers} Ratings</RatingNumber>
+                                                        <Box className='d-flex'>
+                                                            <Rating>{data?.ratings.rating} <GradeIcon fontSize='13px' sx={{ margin: '3px' }} /></Rating>
+                                                            <RatingNumber>{data?.ratings.totalNumbers} Ratings</RatingNumber>
+                                                        </Box>
+                                                        <Box>
+                                                            <Image src={fassured} alt='flipkart assured' />
+                                                        </Box>
                                                     </StyledTypo>
-                                                    <Image src={fassured} alt='flipkart assured' />
                                                     <Typography color={'green'}>Special price</Typography>
                                                     <PriceDetails>
-
-                                                        <Cost>{`₹${data?.price?.cost} `}</Cost>
-                                                        <MRP>{`₹${data?.price?.mrp} `}</MRP>
-                                                        <Discount>{`${data?.price?.discount} off`}</Discount>
+                                                        <Box className='d-flex align-items-center   '>
+                                                            <Cost>{`₹${data?.price?.cost} `}</Cost>
+                                                            <MRP>{`₹${data?.price?.mrp} `}</MRP>
+                                                        </Box>
+                                                        <Box>
+                                                            <Discount>{`${data?.price.discount} Off`}</Discount>
+                                                        </Box>
                                                     </PriceDetails>
                                                 </Box>
                                                 <Offer>Buy 3 items, save extra 3%</Offer>

@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import store from './redux/Store/Store';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import DetailView from './components/details/DetailView';
 import Error from './Error/Error';
 import Cart from './components/cart/Cart';
