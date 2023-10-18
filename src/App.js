@@ -14,6 +14,7 @@ import Error from './Error/Error';
 import Cart from './components/cart/Cart';
 import MakeOrder from './components/Order/MakeOrder';
 import AllProducts from './components/details/AllProducts';
+import BuyNow from './components/Order/BuyNow';
 
 
 const theme = createTheme({
@@ -45,6 +46,7 @@ function App() {
               <Route path='/cart' element={<Cart />} />
               <Route path='/place-order' element={<MakeOrder />} />
               <Route path='/allproducts' element={<AllProducts />} />
+              <Route path='/buynow/:id' element={<BuyNow />} />
               <Route path='*' element={<Error />} />
             </Routes>
 

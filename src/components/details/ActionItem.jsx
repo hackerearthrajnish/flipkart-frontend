@@ -75,8 +75,8 @@ const ActionItem = ({ product }) => {
 
     }
 
-    const BuyNow = async () => {
-
+    const BuyNow = async (id) => {
+        navigate(`/buynow/${id}`)
     }
     return (
         <LeftContainer>
@@ -88,7 +88,7 @@ const ActionItem = ({ product }) => {
                 <AddToCartBtn variant='contained' onClick={() => handleAddToCart(product)}>
                     <ShoppingCartIcon />
                     Add to Cart</AddToCartBtn>
-                <BuyNowBtn variant='contained' onClick={BuyNow}>
+                <BuyNowBtn variant='contained' onClick={() => BuyNow(product.id)}>
                     <BoltIcon />
                     Buy Now</BuyNowBtn>
             </Buttons>

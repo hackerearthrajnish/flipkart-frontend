@@ -140,7 +140,7 @@ const MakeOrder = () => {
 
                 method: 'POST',
                 body: JSON.stringify({
-                    amount, cartProducts, address , email ,name
+                    amount, Product : cartProducts, address , email ,name
                 }),
                 headers: {
 
