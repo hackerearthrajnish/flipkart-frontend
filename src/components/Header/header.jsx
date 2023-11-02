@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import Search from './Search'
 import CustomButtons from './CustomButtons'
 import { useNavigate } from 'react-router-dom'
-import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import Profile from './Profile'
 import { Datacontext } from '../../context/dataProvider'
@@ -84,10 +83,10 @@ const HeaderText = styled(Box)({
 })
 
 const Styledtext = styled(ListItem)({
-    
+
     padding: 2,
     margin: '10px',
-    width : 'inherit'
+    width: 'inherit'
 
 
 })
@@ -137,7 +136,7 @@ const Header = () => {
 
         return (
 
-            <Box sx={{ background: '#f2f2f2', padding: 0 , width : '100%'}}>
+            <Box sx={{ background: '#f2f2f2', padding: 0, width: '100%' }}>
                 <List className='p-0' >
                     <StyledList>
 
@@ -146,7 +145,6 @@ const Header = () => {
                                 <>
                                     <HeaderText>
                                         <Box className='d-flex align-items-center'>
-                                            <PersonIcon /> &nbsp;
                                             <Profile account={account} setAccount={setAccount} />
                                         </Box>
                                         <img src={flipkartImg} alt='flipkart icon' className='flipkart-img' />
@@ -209,7 +207,7 @@ const Header = () => {
                             Offer Zone
                         </MenuList>
                     </Styledtext>
-                    <Divider/>
+                    <Divider />
 
                     <Styledtext onClick={handleClose}>
                         <StorefrontIcon fontSize='13px' />
@@ -235,7 +233,7 @@ const Header = () => {
                             My Notification
                         </MenuList>
                     </Styledtext>
-                    <Divider/>
+                    <Divider />
                     <Styledtext onClick={handleClose}>
                         <MenuList>
                             Notification Preferences

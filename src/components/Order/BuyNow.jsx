@@ -1,12 +1,10 @@
-import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Divider, Grid, Snackbar, Tooltip, Typography, styled } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Divider, Grid, Snackbar, Tooltip, Typography, styled } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import TotalBalance from '../cart/TotalBalance'
-import { CheckOut} from '../../service/api'
-import { Datacontext } from '../../context/dataProvider'
 import DropIn from "braintree-web-drop-in-react";
 import axios from 'axios'
 import MY_URL from '../../Constants/url'
-import { useNavigate, useParams } from 'react-router-dom'
+import {  useNavigate, useParams } from 'react-router-dom'
 import { ToastContainer } from 'react-toast'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useSelector } from 'react-redux'
@@ -149,16 +147,24 @@ const Address = styled(Grid)({
     margin: '1em'
 })
 
+const OrderBtn = styled(Button)({
+    textTransform : 'none',
+    fontSize : '14px',
+    background : 'green',
+    padding : '2px',
+    fontWeight : 600
+})
+
+
+
 
 const BuyNow = () => {
 
     let auth = JSON.parse(localStorage.getItem('user'))
-    const { setisUpdate } = useContext(Datacontext)
     const [clientToken, setClientToken] = useState('')
     const [instance, setInstance] = useState('')
     const [address, setAddress] = useState('')
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
     const [state, setState] = useState({
         open: false,
         vertical: 'top',
@@ -174,15 +180,13 @@ const BuyNow = () => {
 
 
     const { id } = useParams()
-
     const AllProducts = useSelector(state => state.products.products)
-
-
     let selectedProduct = AllProducts?.filter((product) => product.id === id)[0]
 
     const [COD, setCOD] = useState(false)
     const [ProductQuantity, setProductQuantity] = useState(1)
 
+    const navigate = useNavigate()
 
 
 
@@ -234,7 +238,8 @@ const BuyNow = () => {
 
                 method: 'POST',
                 body: JSON.stringify({
-                    amount: (ProductQuantity * selectedProduct.price.cost), address, email, name, Product: [{...selectedProduct, quantity : ProductQuantity}]
+                    amount: (ProductQuantity * selectedProduct.price.cost), address, email, name, Product: [{...selectedProduct, quantity : ProductQuantity}] , 
+                    
                 }),
                 headers: {
 
@@ -242,16 +247,9 @@ const BuyNow = () => {
                 }
 
             })
-            setLoading(false)
-            try {
-                await CheckOut(setisUpdate)
-            }
-            catch (err) {
-                console.log(err)
-            }
             navigate('/')
-            setpaymentSnakbar(true)
-            console.log('yes')
+            
+            
 
         } catch (err) {
             setLoading(false)
@@ -266,6 +264,7 @@ const BuyNow = () => {
             vertical: 'top',
             horizontal: 'center',
         });
+        setCOD(true);
     }
 
     const showMessage = () => {
@@ -340,13 +339,13 @@ const BuyNow = () => {
                                 <Component container>
                                     <LeftComponent item lg={3} md={3} sm={3} xs={11}>
 
-                                        <ProductImg src={selectedProduct.url} alt='product image' />
-                                        <ProductMobImg src={selectedProduct.detailUrl} alt='product image' />
+                                        <ProductImg src={selectedProduct?.url} alt='product image' />
+                                        <ProductMobImg src={selectedProduct?.detailUrl} alt='product image' />
 
                                     </LeftComponent>
                                     <RigthComponent item lg={8} md={8} sm={8} xs={11}  >
-                                        <Tooltip title={selectedProduct.title.longTitle}>
-                                            <Typography>{AddElipsis(selectedProduct.title.longTitle)}</Typography>
+                                        <Tooltip title={selectedProduct?.title?.longTitle}>
+                                            <Typography>{AddElipsis(selectedProduct?.title?.longTitle)}</Typography>
                                         </Tooltip>
 
                                         <Wrapper> Seller:Flipkart
@@ -383,8 +382,8 @@ const BuyNow = () => {
 
                         <Divider sx={{ background: '#878787' }} />
                         <Box className='m-3'>
-                            <input type='checkbox' value='COD' id='COD' onClick={() => setCOD(pre => !pre)} /> <b>Cash on Delivery</b>
-                            <button className='btn btn-outline-success mx-2' onClick={handlePayment} disabled={address === '' || !COD}>Order</button>
+                            <input type='checkbox' value='COD' id='COD'  /> <b>Cash on Delivery</b>
+                            <OrderBtn variant='contained' className='order-btn mx-2' onClick={handlePayment} disabled={address === '' || !COD}>Order</OrderBtn>
                         </Box>
                         <Divider sx={{ background: '#878787' }} />
 
@@ -441,9 +440,9 @@ const BuyNow = () => {
                     </LeftContainer>
                     <RigthContainer item lg={3} md={3} sm={12} xs={12} >
                         <TotalBalance
-                            Amount={ProductQuantity * selectedProduct.price.mrp}
+                            Amount={ProductQuantity * selectedProduct?.price?.mrp}
                             items={ProductQuantity}
-                            discount={ProductQuantity * (selectedProduct.price.mrp - selectedProduct.price.cost)}
+                            discount={ProductQuantity * (selectedProduct?.price?.mrp - selectedProduct?.price?.cost)}
                         />
 
                     </RigthContainer>

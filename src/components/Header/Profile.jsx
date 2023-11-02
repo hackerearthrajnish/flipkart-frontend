@@ -1,6 +1,7 @@
 import { Box, Menu, MenuItem, Typography, styled } from '@mui/material'
 import React, { useContext } from 'react'
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import PersonIcon from '@mui/icons-material/Person';
 import { Datacontext } from '../../context/dataProvider';
 
 const ProfileBox = styled(Box)`
@@ -40,7 +41,7 @@ const Profile = ({ account, setAccount }) => {
         <>
 
             <ProfileBox onClick={handleClick}>
-                <Typography>{account}</Typography>
+                <Typography><PersonIcon/> {account}</Typography>
             </ProfileBox>
             <Component
                 anchorEl={anchorEl}
@@ -55,6 +56,7 @@ const Profile = ({ account, setAccount }) => {
                     <PowerSettingsNewIcon color='primary' fontSize='small' />
                     <Logout>Logout</Logout>
                 </MenuItem>
+                
             </Component>
         </>
     )

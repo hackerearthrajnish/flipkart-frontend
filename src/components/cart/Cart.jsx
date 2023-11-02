@@ -8,6 +8,8 @@ import { DeleteFromCart } from '../../service/api'
 import { Datacontext } from '../../context/dataProvider'
 
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import MY_URL from '../../Constants/url'
 
 
 
@@ -64,13 +66,37 @@ const Cart = () => {
     const { setisUpdate } = useContext(Datacontext)
     const navigate = useNavigate()
 
+    useEffect(() => {
+
+        let auth = JSON.parse(localStorage.getItem('user'))
+        if (auth) {
+
+            const getUserData = async () => {
+                try {
+
+                    const result = await axios.post(`${MY_URL}/get-cart-data`, {
+                        email: auth.email, _id: auth._id
+                    })
+                    auth['amount'] = result.data.amount
+                    auth['cart'] = result.data.cart
+                    auth['cartProducts'] = result.data.cartProducts
+                    setisUpdate(pre => pre+1)
+                    localStorage.setItem('user', JSON.stringify(auth))
+                }
+                catch (err) {
+                    console.log(err)
+                }
+
+            }
+            getUserData();
+        }
+    }, [])
 
     const handleRemoveItem = async (product) => {
 
         if (auth) {
             try {
                 await DeleteFromCart(product, setisUpdate)
-                setisUpdate(pre => pre - 1)
             } catch (err) {
                 console.log(err)
             }

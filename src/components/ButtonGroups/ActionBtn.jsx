@@ -1,5 +1,5 @@
 import { styled } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Datacontext } from '../../context/dataProvider';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -15,16 +15,19 @@ const Component = styled('div')({
 
 
 const ActionBtn = ({ product }) => {
-
-
+    
+    
     const [isRemovedisable, setRemovedisable] = useState(false)
     const [isAdddisable, setdisable] = useState(false)
     const [isUpdating, setisUpdating] = useState(false)
-    const [ProductQuantity, setProductQuantity] = useState(product.quantity)
+    const [ProductQuantity, setProductQuantity] = useState(0)
+    
+    const { isUpdate, setisUpdate } = useContext(Datacontext);
 
-    const { setisUpdate } = useContext(Datacontext);
 
-
+    useEffect(() => {
+        setProductQuantity(product.quantity)
+    }, [isUpdate])
 
     const IncreaseQuantity = async (product) => {
 

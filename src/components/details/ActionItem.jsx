@@ -71,12 +71,20 @@ const ActionItem = ({ product }) => {
                 console.log(err)
             }
         }
+        else{
+            navigate('/cart');
+        }
 
 
     }
 
     const BuyNow = async (id) => {
-        navigate(`/buynow/${id}`)
+        if(auth){
+            navigate(`/buynow/${id}`)
+        }
+        else{
+            alert('Please Login first');
+        }
     }
     return (
         <LeftContainer>

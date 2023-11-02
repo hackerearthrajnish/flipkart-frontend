@@ -61,6 +61,13 @@ const Address = styled(Grid)({
     margin: '1em'
 })
 
+const OrderBtn = styled(Button)({
+    textTransform: 'none',
+    fontSize: '14px',
+    background: 'green',
+    padding: '2px',
+    fontWeight: 600
+})
 
 const MakeOrder = () => {
 
@@ -84,6 +91,7 @@ const MakeOrder = () => {
     });
     const [paymentSnakbar, setpaymentSnakbar] = useState(false)
     const { open } = state;
+    const [COD, setCOD] = useState(false)
 
 
     const handleClose = () => {
@@ -125,7 +133,7 @@ const MakeOrder = () => {
     }, [isUpdate])
 
     const handlePayment = async () => {
-   
+
 
         const amount = auth.amount
         const cartProducts = auth.cartProducts
@@ -140,7 +148,7 @@ const MakeOrder = () => {
 
                 method: 'POST',
                 body: JSON.stringify({
-                    amount, Product : cartProducts, address , email ,name
+                    amount, Product: cartProducts, address, email, name
                 }),
                 headers: {
 
@@ -177,6 +185,7 @@ const MakeOrder = () => {
             horizontal: 'center',
         });
         setisUpdate(pre => pre + 1)
+        setCOD(true);
     }
 
     const showMessage = () => {
@@ -260,8 +269,8 @@ const MakeOrder = () => {
 
                             <Divider sx={{ background: '#878787' }} />
                             <Box className='m-3'>
-                                <input type='checkbox'/> <b>Cash on Delivery</b>
-                                <button className='btn btn-outline-success mx-2' onClick={handlePayment}>Order</button>
+                                <input type='checkbox' value='COD' id='COD'  /> <b>Cash on Delivery</b>
+                                <OrderBtn variant='contained' className='order-btn mx-2' onClick={handlePayment} disabled={address === '' || !COD}>Order</OrderBtn>
                             </Box>
                             <Divider sx={{ background: '#878787' }} />
 

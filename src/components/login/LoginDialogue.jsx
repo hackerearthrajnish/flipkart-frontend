@@ -183,147 +183,147 @@ const LoginDialogue = (props) => {
         try {
             let result = await AuthenticationLogin(loginData)
             setAccount(result.data.name)
-            setisUpdate(result.data.cartProducts.length)
+            setisUpdate(pre => pre + 1)
             handleClose()
-        
+
         }
         catch (err) {
-        console.log(err)
+            console.log(err)
+        }
     }
-}
 
-return (
-    <Dialog open={props.isopen} onClose={handleClose}>
-        <Component container>
-            <Image item lg={4} md={4} sm={4} xs={12}>
-                <Box>
-                    <Heading>{title}</Heading>
-                    <HeadingDescription>{description}</HeadingDescription>
-                </Box>
-                <img src={loginImgUrl} alt='loginImage' id='loginImg' />
-            </Image>
-            {
-                toggle ?
-                    <Grid item lg={8} md={8} sm={8} xs={12}>
+    return (
+        <Dialog open={props.isopen} onClose={handleClose}>
+            <Component container>
+                <Image item lg={4} md={4} sm={4} xs={12}>
+                    <Box>
+                        <Heading>{title}</Heading>
+                        <HeadingDescription>{description}</HeadingDescription>
+                    </Box>
+                    <img src={loginImgUrl} alt='loginImage' id='loginImg' />
+                </Image>
+                {
+                    toggle ?
+                        <Grid item lg={8} md={8} sm={8} xs={12}>
 
-                        <Wrapper onSubmit={handleSubmit}>
-                            <Input
-                                variant="standard"
-                                label="Enter Email/Mobile number"
-                                onChange={handleLogin}
-                                name='email'
-                            />
-                            <Input
-                                variant="standard"
-                                label="Enter Password"
-                                onChange={handleLogin}
-                                name='password'
-                                type={showPassword ? 'text' : 'password'}
-                            />
-                            <EyeBtn className='Show-password' onClick={manageShowPassword} > {showPassword ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />}</EyeBtn>
-                            <Typography variant='body2'>By continuing, you agree to Flipkart's Terms of Use and Privacy Policy.</Typography>
-                            <LoginBtn variant="contained" onClick={Loginfun}>Login</LoginBtn>
-                            <Typography sx={{ textAlign: 'center' }}>OR</Typography>
-                            <RegistrationBtn variant="contained">Request OTP</RegistrationBtn>
-                            <ToggleBtn onClick={() => {
-                                setToggle(false);
-                                setTitle("Looks like you're new here!");
-                                setDescription('Sign up with your mobile number to get started')
-                            }
-                            }
-                            >New to Flipkart? Create an account</ToggleBtn>
-                        </Wrapper>
-                    </Grid>
-                    :
-                    <Grid item lg={8} md={8} sm={8} xs={12}>
+                            <Wrapper onSubmit={handleSubmit}>
+                                <Input
+                                    variant="standard"
+                                    label="Enter Email/Mobile number"
+                                    onChange={handleLogin}
+                                    name='email'
+                                />
+                                <Input
+                                    variant="standard"
+                                    label="Enter Password"
+                                    onChange={handleLogin}
+                                    name='password'
+                                    type={showPassword ? 'text' : 'password'}
+                                />
+                                <EyeBtn className='Show-password' onClick={manageShowPassword} > {showPassword ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />}</EyeBtn>
+                                <Typography variant='body2'>By continuing, you agree to Flipkart's Terms of Use and Privacy Policy.</Typography>
+                                <LoginBtn variant="contained" onClick={Loginfun}>Login</LoginBtn>
+                                <Typography sx={{ textAlign: 'center' }}>OR</Typography>
+                                <RegistrationBtn variant="contained">Request OTP</RegistrationBtn>
+                                <ToggleBtn onClick={() => {
+                                    setToggle(false);
+                                    setTitle("Looks like you're new here!");
+                                    setDescription('Sign up with your mobile number to get started')
+                                }
+                                }
+                                >New to Flipkart? Create an account</ToggleBtn>
+                            </Wrapper>
+                        </Grid>
+                        :
+                        <Grid item lg={8} md={8} sm={8} xs={12}>
 
-                        <Wrapper onSubmit={handleSubmit}>
-                            <Input
-                                variant="standard"
-                                label="Enter Name"
-                                id='name'
-                                name='name'
-                                onChange={handleChange}
-                                value={values.name}
-                                onBlur={handleBlur}
-                            />
-                            {errors.name && touched.name ? <Error className='form-errors'>{errors.name}</Error> : null}
+                            <Wrapper onSubmit={handleSubmit}>
+                                <Input
+                                    variant="standard"
+                                    label="Enter Name"
+                                    id='name'
+                                    name='name'
+                                    onChange={handleChange}
+                                    value={values.name}
+                                    onBlur={handleBlur}
+                                />
+                                {errors.name && touched.name ? <Error className='form-errors'>{errors.name}</Error> : null}
 
-                            <Input
-                                variant="standard"
-                                label="Enter Email"
-                                name='email'
-                                value={values.email}
-                                placeholder='Enter your email'
-                                onBlur={handleBlur}
-                                onChange={handleChange}
+                                <Input
+                                    variant="standard"
+                                    label="Enter Email"
+                                    name='email'
+                                    value={values.email}
+                                    placeholder='Enter your email'
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
 
-                            />
-                            {errors.email && touched.email ? <Error className='form-errors'>{errors.email}</Error> : null}
-                            <Input
-                                variant="standard"
-                                label="Enter Mobile number"
-                                name='phone'
-                                value={values.phone}
-                                onBlur={handleBlur}
-                                onChange={handleChange}
+                                />
+                                {errors.email && touched.email ? <Error className='form-errors'>{errors.email}</Error> : null}
+                                <Input
+                                    variant="standard"
+                                    label="Enter Mobile number"
+                                    name='phone'
+                                    value={values.phone}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
 
-                            />
-                            {errors.phone && touched.phone ? <Error className='form-errors'>{errors.phone}</Error> : null}
-
-
-                            <Input
-                                ref={passRef}
-                                variant="standard"
-                                label="Enter Password"
-                                name='password'
-                                autoComplete='off'
-                                type={showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                placeholder='Password'
-                                onBlur={handleBlur}
-                                onChange={(e) => {
-                                    handleChange(e)
-                                }}
-
-                            />
-                            <EyeBtn className='Show-password' onClick={manageShowPassword} > {showPassword ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />}</EyeBtn>
-
-                            {errors.password && touched.password ? <Error className='form-errors'>{errors.password}</Error> : null}
+                                />
+                                {errors.phone && touched.phone ? <Error className='form-errors'>{errors.phone}</Error> : null}
 
 
-                            <Input
-                                ref={confirmPass}
-                                variant="standard"
-                                label="Confirm Password"
-                                name='confirm_password'
-                                autoComplete='off'
+                                <Input
+                                    ref={passRef}
+                                    variant="standard"
+                                    label="Enter Password"
+                                    name='password'
+                                    autoComplete='off'
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={values.password}
+                                    placeholder='Password'
+                                    onBlur={handleBlur}
+                                    onChange={(e) => {
+                                        handleChange(e)
+                                    }}
 
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                value={values.confirm_password}
-                                placeholder='Confirm Password'
-                                onBlur={handleBlur}
-                                onChange={handleChange}
+                                />
+                                <EyeBtn className='Show-password' onClick={manageShowPassword} > {showPassword ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />}</EyeBtn>
 
-                            />
-                            <EyeBtn className='Show-password' onClick={manageShowConfirmPassword}>{showConfirmPassword ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />}</EyeBtn>
-                            {errors.confirm_password && touched.confirm_password ? <Error className='form-errors'>{errors.confirm_password}</Error> : null}
+                                {errors.password && touched.password ? <Error className='form-errors'>{errors.password}</Error> : null}
 
-                            <LoginBtn variant="contained" type='submit'>Sign Up</LoginBtn>
-                            <Typography sx={{ textAlign: 'center' }}>OR</Typography>
-                            <ToggleBtn onClick={() => {
-                                setToggle(true);
-                                setTitle("Login");
-                                setDescription('Get access to your Orders, Wishlist and Recommendations')
-                            }
-                            }
-                            >Existing User ? Login</ToggleBtn>
-                        </Wrapper>
-                    </Grid>
-            }
-        </Component>
-    </Dialog>
-)
+
+                                <Input
+                                    ref={confirmPass}
+                                    variant="standard"
+                                    label="Confirm Password"
+                                    name='confirm_password'
+                                    autoComplete='off'
+
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    value={values.confirm_password}
+                                    placeholder='Confirm Password'
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+
+                                />
+                                <EyeBtn className='Show-password' onClick={manageShowConfirmPassword}>{showConfirmPassword ? <VisibilityIcon sx={{ fontSize: 20 }} /> : <VisibilityOffIcon sx={{ fontSize: 20 }} />}</EyeBtn>
+                                {errors.confirm_password && touched.confirm_password ? <Error className='form-errors'>{errors.confirm_password}</Error> : null}
+
+                                <LoginBtn variant="contained" type='submit'>Sign Up</LoginBtn>
+                                <Typography sx={{ textAlign: 'center' }}>OR</Typography>
+                                <ToggleBtn onClick={() => {
+                                    setToggle(true);
+                                    setTitle("Login");
+                                    setDescription('Get access to your Orders, Wishlist and Recommendations')
+                                }
+                                }
+                                >Existing User ? Login</ToggleBtn>
+                            </Wrapper>
+                        </Grid>
+                }
+            </Component>
+        </Dialog>
+    )
 }
 
 export default LoginDialogue
