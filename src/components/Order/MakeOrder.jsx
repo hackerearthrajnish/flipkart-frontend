@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Divider, Grid, Snackbar, Typography, styled } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect,useState } from 'react'
 import TotalBalance from '../cart/TotalBalance'
 import { CalculateDiscount, TotalAmount } from '../utils/CartCalculation'
 import EmptyCart from '../cart/EmptyCart'
@@ -79,6 +79,8 @@ const MakeOrder = () => {
     const [address, setAddress] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const [isChecked , setisChecked] = useState(false)
+    const [isAddressSaved, setisAddressSaved] = useState(false)
     const [state, setState] = useState({
         open: false,
         vertical: 'top',
@@ -176,16 +178,24 @@ const MakeOrder = () => {
     }
 
     const setDeliveryAddress = () => {
-        auth.address = address
-        localStorage.setItem('user', JSON.stringify(auth))
-        // just of re-rendering the page
-        setState({
-            open: true,
-            vertical: 'top',
-            horizontal: 'center',
-        });
-        setisUpdate(pre => pre + 1)
-        setCOD(true);
+
+        if (address.length > 0) {
+
+            auth.address = address
+            localStorage.setItem('user', JSON.stringify(auth))
+            // just of re-rendering the page
+            setState({
+                open: true,
+                vertical: 'top',
+                horizontal: 'center',
+            });
+            setisUpdate(pre => pre + 1)
+            setCOD(true);
+            setisAddressSaved(true)
+        }
+        else {
+            alert("Please Enter Address First");
+        }
     }
 
     const showMessage = () => {
@@ -198,7 +208,7 @@ const MakeOrder = () => {
             });
         }
     }
-
+  
 
     return (
         <>
@@ -240,6 +250,7 @@ const MakeOrder = () => {
                                             <button
                                                 className='btn btn-success m-2'
                                                 onClick={setDeliveryAddress}
+                                                disabled={isAddressSaved || (address.length === 0)}
                                             >Save</button>
 
                                         </Grid>
@@ -269,8 +280,8 @@ const MakeOrder = () => {
 
                             <Divider sx={{ background: '#878787' }} />
                             <Box className='m-3'>
-                                <input type='checkbox' value='COD' id='COD'  /> <b>Cash on Delivery</b>
-                                <OrderBtn variant='contained' className='order-btn mx-2' onClick={handlePayment} disabled={address === '' || !COD}>Order</OrderBtn>
+                                <input type='checkbox' value='COD' id='COD'  onChange={(e)=> setisChecked(e.target.checked)} /> <b>Cash on Delivery</b>
+                                <OrderBtn variant='contained' className='order-btn mx-2' onClick={handlePayment} disabled={ !isChecked|| address === '' || !COD}>Order</OrderBtn>
                             </Box>
                             <Divider sx={{ background: '#878787' }} />
 

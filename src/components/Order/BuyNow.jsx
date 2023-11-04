@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Divider, Grid, Snackbar, Tooltip, Typography, styled } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import TotalBalance from '../cart/TotalBalance'
 import DropIn from "braintree-web-drop-in-react";
 import axios from 'axios'
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import AddElipsis from '../utils/AddElipsis';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { Datacontext } from '../../context/dataProvider';
 
 
 const fassured = 'https://static-assets-web.flixcart.com/www/linchpin/fk-cp-zion/img/fa_62673a.png'
@@ -164,7 +165,11 @@ const BuyNow = () => {
     const [clientToken, setClientToken] = useState('')
     const [instance, setInstance] = useState('')
     const [address, setAddress] = useState('')
+    const [isChecked , setisChecked] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [isAddressSaved, setisAddressSaved] = useState(false)
+    const { setisUpdate } = useContext(Datacontext)
+
     const [state, setState] = useState({
         open: false,
         vertical: 'top',
@@ -259,12 +264,23 @@ const BuyNow = () => {
     }
 
     const setDeliveryAddress = () => {
-        setState({
-            open: true,
-            vertical: 'top',
-            horizontal: 'center',
-        });
-        setCOD(true);
+        if (address.length > 0) {
+
+            auth.address = address
+            localStorage.setItem('user', JSON.stringify(auth))
+            // just of re-rendering the page
+            setState({
+                open: true,
+                vertical: 'top',
+                horizontal: 'center',
+            });
+            setisUpdate(pre => pre + 1)
+            setCOD(true);
+            setisAddressSaved(true)
+        }
+        else {
+            alert("Please Enter Address First");
+        }
     }
 
     const showMessage = () => {
@@ -318,6 +334,7 @@ const BuyNow = () => {
                                     <Grid item ls={3} md={3} sm={3} xs={12}>
                                         <button
                                             className='btn btn-success m-2'
+                                            disabled={isAddressSaved || (address.length === 0)}
                                             onClick={setDeliveryAddress}
                                         >Save</button>
 
@@ -382,8 +399,8 @@ const BuyNow = () => {
 
                         <Divider sx={{ background: '#878787' }} />
                         <Box className='m-3'>
-                            <input type='checkbox' value='COD' id='COD'  /> <b>Cash on Delivery</b>
-                            <OrderBtn variant='contained' className='order-btn mx-2' onClick={handlePayment} disabled={address === '' || !COD}>Order</OrderBtn>
+                            <input type='checkbox' value='COD' id='COD'  onChange={(e)=> setisChecked(e.target.checked)}/> <b>Cash on Delivery</b>
+                            <OrderBtn variant='contained' className='order-btn mx-2' onClick={handlePayment} disabled={!isChecked || address === '' || !COD}>Order</OrderBtn>
                         </Box>
                         <Divider sx={{ background: '#878787' }} />
 
